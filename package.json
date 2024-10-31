@@ -1,0 +1,38 @@
+{
+  "name": "makko-server",
+  "version": "1.0.0",
+  "main": "app.ts",
+  "scripts": {
+    "start": "ts-node app.ts",
+    "test": "ts-jest"
+  },
+  "author": "Jeffrey",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
+    "@types/body-parser": "^1.19.5",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.7.5",
+    "@types/nodemailer": "^6.4.16",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@api/prodia": "file:.api/apis/prodia",
+    "@huggingface/inference": "^2.8.1",
+    "@types/uuid": "^10.0.0",
+    "body-parser": "^1.20.3",
+    "chalk": "^4.1.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "fast-glob": "^3.3.2",
+    "firebase": "^10.14.1",
+    "nodemailer": "^6.9.15",
+    "ts-node": "^10.9.2",
+    "uuid": "^10.0.0"
+  }
+}
