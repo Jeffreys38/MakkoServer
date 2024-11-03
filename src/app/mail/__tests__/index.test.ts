@@ -8,7 +8,7 @@ describe('Test MailService', () => {
         const mail = new OtpVerificationEmail(to);
 
         // Act: Set the parameters for the template and send the email
-        mail.setParamsForTemplate("Thang", "123456");
+        mail.setParamsForTemplate("Thang");
         Makko.getConfig().mailer.sendMail(mail);
     });
 });
