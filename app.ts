@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import apiRoutes from './src/route/api';
+import apiRoutes from './src/route/index.route';
 import LoggerFactory from "./src/util/LoggerFactory";
 require('dotenv').config();
 
@@ -11,5 +11,7 @@ app.use(bodyParser.json());
 app.use('/api', apiRoutes);
 
 app.listen(PORT, () => {
-    LoggerFactory.info(`Server is running on ${process.env.SERVER_URL}:${PORT}`);
+    LoggerFactory.info(`Server is running on :${PORT}`);
 });
+
+export default app;
