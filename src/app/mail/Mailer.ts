@@ -42,14 +42,9 @@ class Mailer {
         Makko.getLogger().info("Mailer initialized");
     }
 
-    public sendMail(mail: BaseMail) {
-        this.transporter.sendMail(this.getMailOptions(mail), (error, info) => {
-            if (error) {
-                Makko.getLogger().error(`Error sending email: ${error}`);
-            } else {
-                Makko.getLogger().info(`Email sent: ${info.response}`);
-            }
-        });
+    async sendMail(mail: BaseMail) {
+        const info = await this.transporter.sendMail(this.getMailOptions(mail));
+        Makko.getLogger().info(`Email sent: ${info.response}`);
     }
 
     private getMailOptions(mail: BaseMail) {

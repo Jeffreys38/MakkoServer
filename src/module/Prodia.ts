@@ -1,6 +1,7 @@
 import prodia from '@api/prodia';
+
 import TextToImage from "./prodia/TextToImage";
-import LoggerFactory from "../util/LoggerFactory";
+import Makko from "../Makko";
 
 /**
 SDXL Models:
@@ -85,17 +86,26 @@ SDXL Models:
  "toonyou_beta6.safetensors [980f6b15]"
 
  **/
-
 class Prodia {
-    private readonly textToImage: TextToImage;
+    private readonly textToImage: TextToImage | undefined;
 
-    constructor(accessToken: string) {
-        prodia.auth(accessToken);
+    constructor() {
+        if (!process.env.PRODIA_TOKEN) {
+            Makko.getLogger().error("PRODIA_TOKEN variables not set in .env")
+            process.exit(1);
+        }
+
+        prodia.auth(process.env.PRODIA_TOKEN);
         this.textToImage = new TextToImage("dreamshaperXL10_alpha2.safetensors [c8afe2ef]");
     }
 
-    public getTextToImage(): TextToImage {
-        return this.textToImage;
+    public async convertTextToImage(prompt: string, negative_prompt?: string): Promise<string | null> {
+        if (this.textToImage) {
+            return this.textToImage.convert(prompt, negative_prompt);
+        } else {
+            Makko.getLogger().error(`TextToImage instance of Prodia not initialized`);
+            return null;
+        }
     }
 
     public async getListOfModels(): Promise<string[]> {
@@ -104,7 +114,7 @@ class Prodia {
             // @ts-ignore
             return response.data;
         } else {
-            LoggerFactory.error(response.data)
+            Makko.getLogger().error(response.data)
             return [];
         }
     }

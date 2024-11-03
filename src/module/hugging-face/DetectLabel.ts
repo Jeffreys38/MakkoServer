@@ -1,6 +1,5 @@
-import prodia from '@api/prodia';
-import {IDetection, Sentiment} from "../../interfaces/IAI";
-import LoggerFactory from "../../util/LoggerFactory";
+import Makko from "../../Makko";
+import HuggingFace from "../HuggingFace";
 
 interface ClassificationResult {
     sequence: string;
@@ -8,26 +7,22 @@ interface ClassificationResult {
     scores: number[];
 }
 
-class DetectLabel implements IDetection {
-    private hf: any;
+class DetectLabel {
     private readonly modelName: string;
 
-    constructor(hf: any, modelName: string) {
-        this.hf = hf;
+    constructor(modelName: string) {
         this.modelName = modelName;
-
-        LoggerFactory.info(`DetectLabel initialized with model: ${modelName}`);
     }
 
-
-    async detect(input: string | string[], labels?: string[]): Promise<Sentiment[] | string> {
-        const classificationResults = await this.hf.zeroShotClassification({
+    async detect(input: string | string[], labels?: string[]): Promise<string> {
+        // @ts-ignore
+        const classificationResults = await HuggingFace.hf.zeroShotClassification({
             model: this.modelName,
             inputs: input,
-            parameters: { candidate_labels: labels }
+            parameters: { candidate_labels: labels || [] }
         })
 
-        LoggerFactory.info(JSON.stringify(classificationResults, null, 4))
+        Makko.getLogger().info(JSON.stringify(classificationResults, null, 4))
         return this.findBestLabel(classificationResults);
     }
 
@@ -37,14 +32,20 @@ class DetectLabel implements IDetection {
      * @private
      */
     private findBestLabel(results: ClassificationResult[]): string {
+        let bestLabel = "";
+        let highestScore = -Infinity;
+
         for (const result of results) {
             const maxScore = Math.max(...result.scores);
-            const secondMaxScore = Math.max(...result.scores.filter(score => score !== maxScore));
-
-            return result.labels[result.scores.indexOf(maxScore)];
+            if (maxScore > highestScore) {
+                highestScore = maxScore;
+                bestLabel = result.labels[result.scores.indexOf(maxScore)];
+            }
         }
-        throw new Error("No best label found");
+
+        return bestLabel;
     }
+
 }
 
 export default DetectLabel;

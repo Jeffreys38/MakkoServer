@@ -1,17 +1,14 @@
 import prodia from '@api/prodia';
-import { IConvertable } from "../../interfaces/IAI";
-import LoggerFactory from "../../util/LoggerFactory";
+import Makko from "../../Makko";
 
-class TextToImage implements IConvertable {
+class TextToImage {
     private readonly modelName: string;
 
     constructor(modelName: string) {
         this.modelName = modelName;
-
-        LoggerFactory.info(`[Prodia] TextToImage initialized`);
     }
 
-    async convert(prompt: string, negative_prompt?: string): Promise<string | undefined> {
+    async convert(prompt: string, negative_prompt?: string): Promise<string | null> {
         const data = await prodia.sdxlGenerate({
             model: this.modelName,
             prompt: this.combinePrompt(prompt),
@@ -31,9 +28,10 @@ class TextToImage implements IConvertable {
                 // @ts-ignore
                 response = await prodia.getJob({ jobId: data.data.job });
             }
-            return response.data.imageUrl;
+            return response.data.imageUrl || null;
         } else {
-            throw new Error(`Failed to generate image: ${data.data}`);
+            Makko.getLogger().error(`TextToImage of Prodia failed to generate image: ${data.data}`);
+            return null;
         }
     }
 

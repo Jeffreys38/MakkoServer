@@ -1,6 +1,8 @@
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
-import { storage } from "../config/firebaseConfig";
+import Makko from "../Makko";
+
+const storage = Makko.getConfig().firebase.storage;
 
 async function uploadAndGetUrl(blob: Blob): Promise<string> {
     const path = `bot/${uuidv4()}`;

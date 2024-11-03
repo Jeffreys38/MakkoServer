@@ -1,19 +1,14 @@
-import { IConvertable } from "../../interfaces/IAI";
-import LoggerFactory from "../../util/LoggerFactory";
+import HuggingFace from "../HuggingFace";
 
-class GenerationText implements IConvertable {
-    private hf: any;
+class GenerationText {
     private readonly modelName: string;
 
-    constructor(hf: any, modelName: string) {
-        this.hf = hf;
+    constructor(modelName: string) {
         this.modelName = modelName;
-
-        LoggerFactory.info(`GenerationText initialized with model: ${modelName}`);
     }
 
-    async convert(text: string): Promise<string | undefined> {
-        const response = await this.hf.chatCompletion({
+    async convert(text: string): Promise<string> {
+        const response = await HuggingFace.hf.chatCompletion({
             model: this.modelName,
             messages: [{
                 role: "user",
@@ -25,9 +20,9 @@ class GenerationText implements IConvertable {
         });
 
         if (response.choices && response.choices.length > 0) {
-            return response.choices[0].message.content;
+            return response.choices[0].message.content || "";
         } else {
-            throw new Error("No response from the model");
+            return "";
         }
     }
 }
