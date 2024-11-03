@@ -1,27 +1,22 @@
-import { IConvertable } from "../../interfaces/IAI";
 import uploadAndGetUrl from "../../util/uploadAndGetUrl";
-import LoggerFactory from "../../util/LoggerFactory";
 import GenerationText from "./GenerationText";
+import HuggingFace from "../HuggingFace";
 
-class TextToSpeech implements IConvertable {
-    private hf: any;
+class TextToSpeech {
     private readonly modelName: string;
 
-    constructor(hf: any, modelName: string) {
-        this.hf = hf;
+    constructor(modelName: string) {
         this.modelName = modelName;
-
-        LoggerFactory.info(`TextToSpeech initialized with model: ${modelName}`);
     }
 
     async convert(text: string): Promise<string | undefined> {
         // Ask the model to generate audio from text
-        const generationText = new GenerationText(this.hf, "mistralai/Mistral-7B-Instruct-v0.2");
+        const generationText = new GenerationText("mistralai/Mistral-7B-Instruct-v0.2");
         const answer = await generationText.convert(text);
 
-        const blob = await this.hf.textToSpeech({
+        const blob = await HuggingFace.hf.textToSpeech({
             model: this.modelName,
-            inputs: answer
+            inputs: answer || ""
         });
 
         return await uploadAndGetUrl(blob);

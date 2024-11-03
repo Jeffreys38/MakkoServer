@@ -1,5 +1,4 @@
 import BaseMail from "./BaseMail";
-import fs from "fs";
 import Makko from "../../Makko";
 
 class ResetPasswordEmail extends BaseMail {
