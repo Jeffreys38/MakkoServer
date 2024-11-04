@@ -4,7 +4,7 @@
   "main": "app.ts",
   "scripts": {
     "start": "ts-node app.ts",
-    "test": "ts-jest"
+    "test": "jest"
   },
   "author": "Jeffrey",
   "license": "ISC",
