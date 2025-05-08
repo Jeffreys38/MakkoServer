@@ -3,6 +3,7 @@ import {Request, Response} from 'express';
 import LoggerFactory from "../util/LoggerFactory";
 import OtpVerificationEmail from "../app/mail/OtpVerificationEmail";
 import WelcomeMail from "../app/mail/WelcomeMail";
+import ResetPasswordEmail from "../app/mail/ResetPasswordEmail";
 
 class MailController {
     async sendOtpMail(req: Request, res: Response) {
@@ -34,7 +35,11 @@ class MailController {
 
     async sendResetPasswordEmail(req: Request, res: Response) {
         try {
+            const { email, receiverName } = req.body;
+            const resetPwdMail = new ResetPasswordEmail(email);
 
+            await Makko.getConfig().mailer.sendMail(resetPwdMail);
+            res.status(200).json({ success: true, message: "Reset email sent" });
         } catch (error: any) {
             LoggerFactory.error(error.message);
             res.status(500).json({success: false, message: error.message});

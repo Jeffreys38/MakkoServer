@@ -10,10 +10,10 @@ class Makko {
     private static prodia: Prodia;
 
     public static getConfig(): Config {
-        if (!this.config) {
-            this.config = new Config();
+        if (!Makko.config) {
+            Makko.config = new Config();
         }
-        return this.config;
+        return Makko.config;
     }
 
     public static getHuggingFace(): HuggingFace {

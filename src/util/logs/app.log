@@ -1,0 +1,10 @@
+22:01:16 - INFO - /api/mail/welcome POST route initialized
+22:01:16 - INFO - /api/mail/otp POST route initialized
+22:01:16 - INFO - /api/mail/reset-password POST route initialized
+22:01:16 - INFO - /api/prodia/text-to-image POST route initialized
+22:01:16 - INFO - Server is running on :3000
+22:01:46 - INFO - /api/mail/welcome POST route initialized
+22:01:46 - INFO - /api/mail/otp POST route initialized
+22:01:46 - INFO - /api/mail/reset-password POST route initialized
+22:01:46 - INFO - /api/prodia/text-to-image POST route initialized
+22:01:46 - INFO - Server is running on :3000
