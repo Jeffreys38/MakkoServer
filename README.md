@@ -1,6 +1,6 @@
-# [Server] Makko Social Network
+# Makko Social Server
 
-**Project name**: Social Network App
+**Project name**: Makko Social App
 
 **Loading Logo**: Reference from Leonardo.ai
 
